@@ -8,19 +8,22 @@
 	</supportedVersions>
 	<description><![CDATA[[RealRim] Heaters makes electrical room heaters behave like actual power-hungry resistive heaters instead of tiny miracle boxes that somehow bully whole colonies into shirtsleeve weather on what amounts to a desk lamp's power budget.
 
-Vanilla's numbers are wildly generous: a standard heater pushes a surprising amount of heat for only 175 W, which makes base heating feel oddly magical instead of industrial. This mod drags those values back toward something that at least feels electrically painful.
+Vanilla's numbers are wildly generous: a standard heater pushes a surprising amount of heat for only 175 W, then loafs around on an equally silly standby draw. This mod drags those values back toward something that at least feels electrically painful.
 
 Changes included:
-- Vanilla Heater: 175 W -> 2500 W.
-- WallStuff Wall Heater: scaled to match its higher heat push.
-- Additional electrical room heaters using the same standard TempControl power model are scaled linearly by heat push when their heat values match one of the supported tiers in these patches.
+- Vanilla Heater: 175 W -> 2500 W while heating; 17 W -> 5 W while idle.
+- WallStuff Wall Heater: scaled active draw to match its higher heat push; idle draw set to 5 W.
+- Additional electrical room heaters using the same standard TempControl power model are scaled linearly by heat push when their heat values match one of the supported tiers in these patches, with idle draw normalized to 5 W.
+- Dubs Bad Hygiene / Dubs Central Heating electric boilers: rebalanced to 100 heating units = 1.5 kW.
 
-The result is simple: if a heater shoves more heat into a room, it should draw more power from the grid. No free lunch. No pocket fusion hidden in a steel box. Just honest, brutal, colony-killing winter electricity bills.]]></description>
+The result is simple: if a heater shoves more heat into a room, it should draw more power from the grid. If it is just sitting there waiting for the thermostat, it should only sip enough power to keep its control electronics awake. And if a boiler is feeding an entire hydronic heating loop and hot water system, it should absolutely maul your power network instead of pretending to run that whole circus on pocket change. No free lunch. No pocket fusion hidden in a steel box. Just honest, brutal, colony-killing winter electricity bills.]]></description>
 	<loadAfter>
 		<li>Arcjc007.WallStuff</li>
 		<li>Alaestor.QuantumCooling</li>
 		<li>neceros.tiertwotemp</li>
 		<li>Murmur.TCU</li>
 		<li>Murmur.TCU.kotobike</li>
+		<li>Dubwise.DubsBadHygiene</li>
+		<li>Dubwise.DubsCentralHeating</li>
 	</loadAfter>
 </ModMetaData>

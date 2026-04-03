@@ -10,7 +10,7 @@ Repository: <https://github.com/SIGSEGV111/RealRimHeaters>
 
 ## What this mod does
 
-This is an XML-only RimWorld 1.6 balancing mod that increases the active power usage of electrical room heaters and reduces their idle draw to a near-standby value.
+This is an XML-only RimWorld 1.6 balancing mod that increases the active power usage of electrical room heaters, reduces their idle draw to a near-standby value, and adds a dedicated rebalance for Dubs Bad Hygiene electric boilers.
 
 The balancing anchor is the vanilla heater request:
 
@@ -25,17 +25,24 @@ Everything else is scaled linearly from that point for active draw:
 
 Idle draw for all supported heater tiers is normalized to 5 W.
 
+Dubs Bad Hygiene / Dubs Central Heating electric boiler rebalance:
+
+- 250 heating units -> 3750 W;
+- target ratio: 100 heating units = 1500 W.
+
 ## Included coverage
 
 - Vanilla Heater;
 - WallStuff Wall Heater;
-- any other electrical temperature building using the standard RimWorld power + temp-control comp setup and one of the supported heat-push tiers above.
+- any other electrical temperature building using the standard RimWorld power + temp-control comp setup and one of the supported heat-push tiers above;
+- Dubs Bad Hygiene electric boiler;
+- Dubs Central Heating electric boiler.
 
 ## Soft compatibility
 
 There are no hard dependencies.
 
-The patch file uses `PatchOperationConditional`, so missing targets are ignored cleanly. Optional `loadAfter` entries are included for known heater-related mods so that, when present, their defs are more likely to exist before these patches run.
+The patch files use `PatchOperationConditional`, so missing targets are ignored cleanly. Optional `loadAfter` entries are included for known heater-related mods so that, when present, their defs are more likely to exist before these patches run.
 
 ## Installation
 

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+	<!--
+		Dubs Bad Hygiene and Dubs Central Heating electric boiler rebalance.
+
+		Observed 1.6 defs:
+		- ElectricBoiler BaseCapacity = 250 U;
+		- ElectricBoiler basePowerConsumption = 250 W.
+
+		Requested target:
+		- 100 U = 1500 W.
+
+		Therefore:
+		- 250 U = 3750 W.
+
+		We replace only basePowerConsumption and leave BaseCapacity untouched.
+		This preserves the boiler's existing heating-unit scale while making each
+		power setting proportionally more expensive.
+	-->
+
+	<!-- Dubs Bad Hygiene ElectricBoiler: 250 U -> 3750 W -->
+	<Operation Class="PatchOperationConditional">
+		<xpath>Defs/ThingDef[defName = "ElectricBoiler" and comps/li[@Class = "DubsBadHygiene.CompProperties_CompBoiler"]/BaseCapacity = 250 and comps/li[@Class = "CompProperties_Power"]/basePowerConsumption]/comps/li[@Class = "CompProperties_Power"]/basePowerConsumption</xpath>
+		<match Class="PatchOperationReplace">
+			<xpath>Defs/ThingDef[defName = "ElectricBoiler" and comps/li[@Class = "DubsBadHygiene.CompProperties_CompBoiler"]/BaseCapacity = 250 and comps/li[@Class = "CompProperties_Power"]/basePowerConsumption]/comps/li[@Class = "CompProperties_Power"]/basePowerConsumption</xpath>
+			<value>
+				<basePowerConsumption>3750</basePowerConsumption>
+			</value>
+		</match>
+	</Operation>
+
+	<!-- Dubs Central Heating ElectricBoiler: 250 U -> 3750 W -->
+	<Operation Class="PatchOperationConditional">
+		<xpath>Defs/ThingDef[defName = "ElectricBoiler" and comps/li[@Class = "DubsCentralHeating.CompProperties_CompBoiler"]/BaseCapacity = 250 and comps/li[@Class = "CompProperties_Power"]/basePowerConsumption]/comps/li[@Class = "CompProperties_Power"]/basePowerConsumption</xpath>
+		<match Class="PatchOperationReplace">
+			<xpath>Defs/ThingDef[defName = "ElectricBoiler" and comps/li[@Class = "DubsCentralHeating.CompProperties_CompBoiler"]/BaseCapacity = 250 and comps/li[@Class = "CompProperties_Power"]/basePowerConsumption]/comps/li[@Class = "CompProperties_Power"]/basePowerConsumption</xpath>
+			<value>
+				<basePowerConsumption>3750</basePowerConsumption>
+			</value>
+		</match>
+	</Operation>
+</Patch>
