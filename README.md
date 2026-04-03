@@ -10,17 +10,20 @@ Repository: <https://github.com/SIGSEGV111/RealRimHeaters>
 
 ## What this mod does
 
-This is an XML-only RimWorld 1.6 balancing mod that increases the power usage of electrical room heaters.
+This is an XML-only RimWorld 1.6 balancing mod that increases the active power usage of electrical room heaters and reduces their idle draw to a near-standby value.
 
 The balancing anchor is the vanilla heater request:
 
-- 21 heat-per-second -> 2500 W.
+- 21 heat-per-second -> 2500 W active;
+- 5 W idle.
 
-Everything else is scaled linearly from that point:
+Everything else is scaled linearly from that point for active draw:
 
-- 40 heat-per-second -> 4762 W;
-- 75 heat-per-second -> 8929 W;
-- 400 heat-per-second -> 47619 W.
+- 40 heat-per-second -> 4762 W active;
+- 75 heat-per-second -> 8929 W active;
+- 400 heat-per-second -> 47619 W active.
+
+Idle draw for all supported heater tiers is normalized to 5 W.
 
 ## Included coverage
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Patch>
 	<!--
-		Scaling rule:
+		Active power scaling rule:
 		2500 W / 21 heat-per-second = 119.047619... W per heat-per-second.
 
 		Supported tiers below are applied to any electrical temperature building that:
@@ -10,10 +10,11 @@
 		- has a standard CompProperties_TempControl/energyPerSecond node;
 		- has positive heat push.
 
+		Idle power is normalized to 5 W for the same matched heater tiers.
 		This keeps compatibility soft: if a target building does not exist, the conditional patch simply does nothing.
 	-->
 
-	<!-- 21 EPS -> 2500 W (vanilla Heater, plus any modded heater using vanilla heat push) -->
+	<!-- 21 EPS -> 2500 W active -->
 	<Operation Class="PatchOperationConditional">
 		<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power"]/basePowerConsumption and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 21]/comps/li[@Class = "CompProperties_Power"]/basePowerConsumption</xpath>
 		<match Class="PatchOperationReplace">
@@ -24,7 +25,29 @@
 		</match>
 	</Operation>
 
-	<!-- 40 EPS -> 4762 W (WallStuff WallHeater) -->
+	<!-- 21 EPS -> 5 W idle (replace existing) -->
+	<Operation Class="PatchOperationConditional">
+		<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power"]/idlePowerDraw and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 21]/comps/li[@Class = "CompProperties_Power"]/idlePowerDraw</xpath>
+		<match Class="PatchOperationReplace">
+			<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power"]/idlePowerDraw and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 21]/comps/li[@Class = "CompProperties_Power"]/idlePowerDraw</xpath>
+			<value>
+				<idlePowerDraw>5</idlePowerDraw>
+			</value>
+		</match>
+	</Operation>
+
+	<!-- 21 EPS -> 5 W idle (add when absent) -->
+	<Operation Class="PatchOperationConditional">
+		<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power" and not(idlePowerDraw)]/basePowerConsumption and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 21]/comps/li[@Class = "CompProperties_Power" and not(idlePowerDraw)]</xpath>
+		<match Class="PatchOperationAdd">
+			<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power" and not(idlePowerDraw)]/basePowerConsumption and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 21]/comps/li[@Class = "CompProperties_Power" and not(idlePowerDraw)]</xpath>
+			<value>
+				<idlePowerDraw>5</idlePowerDraw>
+			</value>
+		</match>
+	</Operation>
+
+	<!-- 40 EPS -> 4762 W active -->
 	<Operation Class="PatchOperationConditional">
 		<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power"]/basePowerConsumption and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 40]/comps/li[@Class = "CompProperties_Power"]/basePowerConsumption</xpath>
 		<match Class="PatchOperationReplace">
@@ -35,7 +58,29 @@
 		</match>
 	</Operation>
 
-	<!-- 75 EPS -> 8929 W (Quantum Cooling small heater tier) -->
+	<!-- 40 EPS -> 5 W idle (replace existing) -->
+	<Operation Class="PatchOperationConditional">
+		<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power"]/idlePowerDraw and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 40]/comps/li[@Class = "CompProperties_Power"]/idlePowerDraw</xpath>
+		<match Class="PatchOperationReplace">
+			<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power"]/idlePowerDraw and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 40]/comps/li[@Class = "CompProperties_Power"]/idlePowerDraw</xpath>
+			<value>
+				<idlePowerDraw>5</idlePowerDraw>
+			</value>
+		</match>
+	</Operation>
+
+	<!-- 40 EPS -> 5 W idle (add when absent) -->
+	<Operation Class="PatchOperationConditional">
+		<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power" and not(idlePowerDraw)]/basePowerConsumption and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 40]/comps/li[@Class = "CompProperties_Power" and not(idlePowerDraw)]</xpath>
+		<match Class="PatchOperationAdd">
+			<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power" and not(idlePowerDraw)]/basePowerConsumption and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 40]/comps/li[@Class = "CompProperties_Power" and not(idlePowerDraw)]</xpath>
+			<value>
+				<idlePowerDraw>5</idlePowerDraw>
+			</value>
+		</match>
+	</Operation>
+
+	<!-- 75 EPS -> 8929 W active -->
 	<Operation Class="PatchOperationConditional">
 		<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power"]/basePowerConsumption and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 75]/comps/li[@Class = "CompProperties_Power"]/basePowerConsumption</xpath>
 		<match Class="PatchOperationReplace">
@@ -46,13 +91,57 @@
 		</match>
 	</Operation>
 
-	<!-- 400 EPS -> 47619 W (Quantum Cooling large heater tier) -->
+	<!-- 75 EPS -> 5 W idle (replace existing) -->
+	<Operation Class="PatchOperationConditional">
+		<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power"]/idlePowerDraw and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 75]/comps/li[@Class = "CompProperties_Power"]/idlePowerDraw</xpath>
+		<match Class="PatchOperationReplace">
+			<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power"]/idlePowerDraw and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 75]/comps/li[@Class = "CompProperties_Power"]/idlePowerDraw</xpath>
+			<value>
+				<idlePowerDraw>5</idlePowerDraw>
+			</value>
+		</match>
+	</Operation>
+
+	<!-- 75 EPS -> 5 W idle (add when absent) -->
+	<Operation Class="PatchOperationConditional">
+		<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power" and not(idlePowerDraw)]/basePowerConsumption and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 75]/comps/li[@Class = "CompProperties_Power" and not(idlePowerDraw)]</xpath>
+		<match Class="PatchOperationAdd">
+			<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power" and not(idlePowerDraw)]/basePowerConsumption and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 75]/comps/li[@Class = "CompProperties_Power" and not(idlePowerDraw)]</xpath>
+			<value>
+				<idlePowerDraw>5</idlePowerDraw>
+			</value>
+		</match>
+	</Operation>
+
+	<!-- 400 EPS -> 47619 W active -->
 	<Operation Class="PatchOperationConditional">
 		<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power"]/basePowerConsumption and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 400]/comps/li[@Class = "CompProperties_Power"]/basePowerConsumption</xpath>
 		<match Class="PatchOperationReplace">
 			<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power"]/basePowerConsumption and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 400]/comps/li[@Class = "CompProperties_Power"]/basePowerConsumption</xpath>
 			<value>
 				<basePowerConsumption>47619</basePowerConsumption>
+			</value>
+		</match>
+	</Operation>
+
+	<!-- 400 EPS -> 5 W idle (replace existing) -->
+	<Operation Class="PatchOperationConditional">
+		<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power"]/idlePowerDraw and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 400]/comps/li[@Class = "CompProperties_Power"]/idlePowerDraw</xpath>
+		<match Class="PatchOperationReplace">
+			<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power"]/idlePowerDraw and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 400]/comps/li[@Class = "CompProperties_Power"]/idlePowerDraw</xpath>
+			<value>
+				<idlePowerDraw>5</idlePowerDraw>
+			</value>
+		</match>
+	</Operation>
+
+	<!-- 400 EPS -> 5 W idle (add when absent) -->
+	<Operation Class="PatchOperationConditional">
+		<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power" and not(idlePowerDraw)]/basePowerConsumption and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 400]/comps/li[@Class = "CompProperties_Power" and not(idlePowerDraw)]</xpath>
+		<match Class="PatchOperationAdd">
+			<xpath>Defs/ThingDef[thingCategories/li = "BuildingsTemperature" and comps/li[@Class = "CompProperties_Power" and not(idlePowerDraw)]/basePowerConsumption and comps/li[@Class = "CompProperties_TempControl"]/energyPerSecond = 400]/comps/li[@Class = "CompProperties_Power" and not(idlePowerDraw)]</xpath>
+			<value>
+				<idlePowerDraw>5</idlePowerDraw>
 			</value>
 		</match>
 	</Operation>
